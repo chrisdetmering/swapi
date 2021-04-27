@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { SwapiTable } from './components/Table';
+import { swapiContext } from './context/Context';
 
 function App() {
+  const [characters, setCharacters] = useState([
+    {
+      name: 'Duane',
+      gender: 'male',
+      height: '182',
+      mass: '80',
+      homeworld: 'Pennsylvania',
+      vehicles: "99' neon",
+    },
+  ]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <swapiContext.Provider value={{ characters, setCharacters }}>
+        <header>
+          <h1>SWAPI-V</h1>
+        </header>
+        <SwapiTable />
+      </swapiContext.Provider>
     </div>
   );
 }
