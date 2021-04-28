@@ -58,9 +58,10 @@ export const SwapiTable = () => {
             <td>{char.height}cm</td>
             <td>{char.mass}kg</td>
             <td>{char.birth_year}</td>
+            <td>{char.homeworld}</td>
             {/* <td>{handleAPIReference(char.homeworld)}</td> */}
-            {/* <td>{char.films}</td> */}
-            {/* <td>{char.vehicles}</td> */}
+            <td>{char.films}</td>
+            <td>{char.vehicles}</td>
             {/* <td>{char.starships}</td> */}
           </tr>
         ))}

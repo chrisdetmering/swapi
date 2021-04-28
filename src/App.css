@@ -14,11 +14,34 @@ body {
 }
 h1 {
   color: yellow;
-  background-color: black;
   font-size: 6em;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: bolder;
   letter-spacing: 0.5em;
   border-radius: 5px;
   padding: 0.5em 0.45em;
+}
+Header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: black;
+}
+select {
+  padding: 0 0.75em 0.75em 0.75em;
+}
+select,
+option {
+  color: yellow;
+  font-weight: bolder;
+  text-transform: uppercase;
+  background-color: black;
+  border: none;
+}
+.search {
+  color: yellow;
+  font-weight: bolder;
+  text-transform: capitalize;
+  background-color: black;
+  /* border: grey 2px; */
 }
