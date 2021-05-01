@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
+import Axios from 'axios';
 import { swapiContext } from '../context/Context';
-import BootstrapTable from 'react-bootstrap-table-next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css';
-import Axios from 'axios';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import './Table.css';
+import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 export const SwapiTable = () => {
   const { characters, setCharacters } = useContext(swapiContext);
@@ -16,7 +16,7 @@ export const SwapiTable = () => {
 
   useEffect(() => {
     const fetchCharacters = async () => {
-      const response = await Axios(`${apiURL}people/`);
+      const response = await Axios(`${apiURL}planets/`);
       setCharacters(response.data.results);
     };
     fetchCharacters();
@@ -62,15 +62,11 @@ export const SwapiTable = () => {
     nextPageText: '>',
     prePageText: '<',
     showTotal: true,
-    alwaysShowAllBtns: true,
-    onPageChange: function (page, sizePerPage) {
-      console.log('page', page);
-      console.log('sizePerPage', sizePerPage);
-    },
-    onSizePerPageChange: function (page, sizePerPage) {
-      console.log('page', page);
-      console.log('sizePerPage', sizePerPage);
-    },
+    alwaysShowAllBtns: false,
+    // onPageChange: function (page, sizePerPage) {
+    // },
+    // onSizePerPageChange: function (page, sizePerPage) {
+    // },
   });
 
   const { SearchBar, ClearSearchButton } = Search;
@@ -81,17 +77,15 @@ export const SwapiTable = () => {
       keyField='name'
       data={characters}
       columns={columns}
-      hover='true'
-      striped='true'
-      search
-      filter={filterFactory()}>
+      search>
       {props => (
         <div>
-          {/* <h6>Something</h6> */}
-          <SearchBar {...props.searchProps} />
-          {/* <ClearSearchButton {...props.searchProps} /> */}
-          <hr />
+          <SearchBar placeholder='Force Seach...' {...props.searchProps} />
+          <ClearSearchButton {...props.searchProps} />
           <BootstrapTable
+            rowClasses='custom-row-class'
+            // hover='true'
+            // striped='false'
             defaultSorted={defaultSorted}
             pagination={pagination}
             {...props.baseProps}

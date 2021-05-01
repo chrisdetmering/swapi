@@ -1,0 +1,19 @@
+.sr-only {
+  display: none;
+}
+thead {
+  color: yellow;
+  background-color: black;
+  border: none;
+}
+.custom-row-class {
+  color: yellow;
+  border: none;
+  background-color: black;
+}
+.custom-row-class:hover {
+  color: whitesmoke;
+  border: none;
+  background-color: rgb(53, 49, 49);
+  font-weight: bold;
+}

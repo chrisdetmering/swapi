@@ -1,5 +1,5 @@
 body {
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,7 @@ body {
 } */
 h1 {
   color: yellow;
-  font-size: 6em;
+  font-size: 5.6em;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: bolder;
   letter-spacing: 0.5em;
@@ -24,24 +24,6 @@ h1 {
 Header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   background-color: black;
-}
-select {
-  padding: 0 0.75em 0.75em 0.75em;
-}
-select,
-option {
-  color: yellow;
-  font-weight: bolder;
-  text-transform: uppercase;
-  background-color: black;
-  border: none;
-}
-.search {
-  color: yellow;
-  font-weight: bolder;
-  text-transform: capitalize;
-  background-color: black;
-  /* border: grey 2px; */
 }
