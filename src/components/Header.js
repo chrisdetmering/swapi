@@ -4,7 +4,7 @@ export const Header = () => {
   return (
     <header>
       <h1>SWAPI-V</h1>
-      <div className='filters'>
+      {/* <div className='filters'>
         <input type='text' className='search' placeholder='Force Search...' />
         <select className='selectCategory'>
           <option value='people'>people</option>
@@ -16,7 +16,7 @@ export const Header = () => {
           <option value='light'>Light Side</option>
           <option value='dark'>Dark Side</option>
         </select>
-      </div>
+      </div> */}
     </header>
   );
 };

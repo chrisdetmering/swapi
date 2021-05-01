@@ -5,13 +5,13 @@ body {
   align-items: center;
   /* justify-content: center; */
 }
-.App {
+/* .App {
   text-align: center;
   background-color: #282c34;
   border-radius: 3px;
   min-width: 60vw;
   min-height: 60vh;
-}
+} */
 h1 {
   color: yellow;
   font-size: 6em;
