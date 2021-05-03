@@ -5,21 +5,26 @@ body {
   align-items: center;
   /* justify-content: center; */
 }
-/* .App {
-  text-align: center;
-  background-color: #282c34;
+.App {
+  width: 90vw;
   border-radius: 3px;
-  min-width: 60vw;
-  min-height: 60vh;
-} */
+}
 h1 {
   color: yellow;
-  font-size: 5.6em;
+  font-size: 4rem;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: bolder;
   letter-spacing: 0.5em;
   border-radius: 5px;
-  padding: 0.5em 0.45em;
+  padding: 0.5em 0.45em 0.1em 0.45em;
+}
+h2 {
+  color: yellow;
+  font-size: 1rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  letter-spacing: 0.75em;
+  border-radius: 5px;
+  padding: 0em 0.45em 1.2em 0.45em;
 }
 Header {
   display: flex;

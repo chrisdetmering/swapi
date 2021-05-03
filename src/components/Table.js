@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
 import { swapiContext } from '../context/Context';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,16 +11,29 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 export const SwapiTable = () => {
   const { characters, setCharacters } = useContext(swapiContext);
-
+  const [characterData, setCharacterData] = useState(characters);
   const apiURL = `https://swapi.dev/api/`;
 
   useEffect(() => {
     const fetchCharacters = async () => {
-      const response = await Axios(`${apiURL}planets/`);
-      setCharacters(response.data.results);
+      for (let i = 1; i < 10; i++) {
+        let response = await Axios(`${apiURL}people/?page=${i}`);
+        let cleanData = response.data.results.map(character => {
+          return {
+            ...character,
+            gender: handleGender(character.gender),
+            homeworld: handleHomeworld(character.homeworld).toString(),
+          };
+        });
+        setCharacters(characters => characters.concat(cleanData));
+      }
     };
     fetchCharacters();
-  }, [apiURL, characters, setCharacters]);
+  }, []);
+
+  useEffect(() => {
+    setCharacterData(characters);
+  }, [characters]);
 
   const handleGender = person => {
     switch (person) {
@@ -28,11 +41,19 @@ export const SwapiTable = () => {
         return 'Male';
       case 'female':
         return 'Female';
+      case 'none':
       case 'n/a':
         return 'Droid';
+      case 'hermaphrodite':
+        return 'Hermaphrodite';
       default:
-        return 'unidentified';
+        return person.gender;
     }
+  };
+
+  const handleHomeworld = async props => {
+    let result = await Axios.get(`${props}`);
+    console.log(result.data.name);
   };
 
   const columns = [
@@ -41,7 +62,7 @@ export const SwapiTable = () => {
     { dataField: 'height', text: 'Height', sort: true },
     { dataField: 'mass', text: 'Mass', sort: true },
     { dataField: 'birth_year', text: 'Birth Year', sort: true },
-    // { dataField: 'homeworld', text: 'Homeworld' },
+    { dataField: 'homeworld', text: 'Homeworld' },
     // { dataField: 'films', text: 'Films' },
     // { dataField: 'vehicles', text: 'Vehicle' },
     // { dataField: 'starships', text: 'Starships' },
@@ -75,7 +96,7 @@ export const SwapiTable = () => {
     <ToolkitProvider
       bootstrap4
       keyField='name'
-      data={characters}
+      data={characterData}
       columns={columns}
       search>
       {props => (

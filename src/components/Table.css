@@ -7,13 +7,23 @@ thead {
   border: none;
 }
 .custom-row-class {
+  font-size: 1.1em;
   color: yellow;
   border: none;
   background-color: black;
 }
 .custom-row-class:hover {
+  font-size: 1em;
   color: whitesmoke;
   border: none;
   background-color: rgb(53, 49, 49);
   font-weight: bold;
+}
+.page-item.active .page-link {
+  background-color: yellow;
+  border-color: yellow;
+  color: black;
+}
+.page-item .page-link {
+  color: black;
 }
