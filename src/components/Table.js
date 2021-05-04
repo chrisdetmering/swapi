@@ -18,14 +18,21 @@ export const SwapiTable = () => {
     const fetchCharacters = async () => {
       for (let i = 1; i < 10; i++) {
         let response = await Axios(`${apiURL}people/?page=${i}`);
-        let cleanData = response.data.results.map(character => {
+        let cleanData = response.data.results.map(async character => {
           return {
             ...character,
+            height: handleHeight(character.height),
+            mass: handleMass(character.mass),
+            birth_year: handleBirthYear(character.birth_year),
             gender: handleGender(character.gender),
-            homeworld: handleHomeworld(character.homeworld).toString(),
+            homeworld: await handleEndpoints(character.homeworld),
+            species: handleSpecies(await handleEndpoints(character.species)),
           };
         });
-        setCharacters(characters => characters.concat(cleanData));
+
+        Promise.all(cleanData).then(result =>
+          setCharacters(characters => characters.concat(result))
+        );
       }
     };
     fetchCharacters();
@@ -51,27 +58,57 @@ export const SwapiTable = () => {
     }
   };
 
-  const handleHomeworld = async props => {
+  const handleEndpoints = async props => {
     let result = await Axios.get(`${props}`);
-    console.log(result.data.name);
+    return Promise.resolve(result.data.name);
+  };
+  const handleSpecies = specie => {
+    switch (specie) {
+      case undefined:
+        return 'Human';
+      default:
+        return specie;
+    }
+  };
+  const handleHeight = height => {
+    switch (height) {
+      case 'unknown':
+        return 'No Record';
+      default:
+        return `${height}cm`;
+    }
+  };
+  const handleMass = mass => {
+    switch (mass) {
+      case 'unknown':
+        return 'No Record';
+      default:
+        return `${mass}kg`;
+    }
+  };
+  const handleBirthYear = year => {
+    switch (year) {
+      case 'unknown':
+        return 'No Record';
+      default:
+        return `${year}`;
+    }
   };
 
   const columns = [
     { dataField: 'name', text: 'Name', sort: true },
     { dataField: 'gender', text: 'Gender', sort: true },
+    { dataField: 'species', text: 'Species', sort: true },
+    { dataField: 'homeworld', text: 'Homeworld', sort: true },
+    { dataField: 'birth_year', text: 'Birth Year', sort: true },
     { dataField: 'height', text: 'Height', sort: true },
     { dataField: 'mass', text: 'Mass', sort: true },
-    { dataField: 'birth_year', text: 'Birth Year', sort: true },
-    { dataField: 'homeworld', text: 'Homeworld' },
-    // { dataField: 'films', text: 'Films' },
-    // { dataField: 'vehicles', text: 'Vehicle' },
-    // { dataField: 'starships', text: 'Starships' },
   ];
 
   const defaultSorted = [
     {
       dataField: 'name',
-      order: 'desc',
+      order: 'asc',
     },
   ];
 
@@ -84,10 +121,6 @@ export const SwapiTable = () => {
     prePageText: '<',
     showTotal: true,
     alwaysShowAllBtns: false,
-    // onPageChange: function (page, sizePerPage) {
-    // },
-    // onSizePerPageChange: function (page, sizePerPage) {
-    // },
   });
 
   const { SearchBar, ClearSearchButton } = Search;
@@ -105,8 +138,6 @@ export const SwapiTable = () => {
           <ClearSearchButton {...props.searchProps} />
           <BootstrapTable
             rowClasses='custom-row-class'
-            // hover='true'
-            // striped='false'
             defaultSorted={defaultSorted}
             pagination={pagination}
             {...props.baseProps}

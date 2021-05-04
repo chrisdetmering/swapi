@@ -6,17 +6,7 @@ import { SwapiTable } from './components/Table';
 import { swapiContext } from './context/Context';
 
 function App() {
-  const [characters, setCharacters] = useState([
-    {
-      name: 'Duane',
-      gender: 'male',
-      height: '182',
-      mass: '80',
-      homeworld: 'Pennsylvania',
-      birth_year: '1991AD',
-      vehicles: "99' neon",
-    },
-  ]);
+  const [characters, setCharacters] = useState([]);
 
   return (
     <div className='App'>
