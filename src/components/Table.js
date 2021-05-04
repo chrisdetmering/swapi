@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { swapiContext } from '../context/Context';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
@@ -10,31 +9,10 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 export const SwapiTable = () => {
-  const { characters, setCharacters } = useContext(swapiContext);
+  const [characters, setCharacters] = useState([]);
   const [characterData, setCharacterData] = useState(characters);
-  const apiURL = `https://swapi.dev/api/`;
 
   useEffect(() => {
-    const fetchCharacters = async () => {
-      for (let i = 1; i < 10; i++) {
-        let response = await Axios(`${apiURL}people/?page=${i}`);
-        let cleanData = response.data.results.map(async character => {
-          return {
-            ...character,
-            height: handleHeight(character.height),
-            mass: handleMass(character.mass),
-            birth_year: handleBirthYear(character.birth_year),
-            gender: handleGender(character.gender),
-            homeworld: await handleEndpoints(character.homeworld),
-            species: handleSpecies(await handleEndpoints(character.species)),
-          };
-        });
-
-        Promise.all(cleanData).then(result =>
-          setCharacters(characters => characters.concat(result))
-        );
-      }
-    };
     fetchCharacters();
   }, []);
 
@@ -42,58 +20,46 @@ export const SwapiTable = () => {
     setCharacterData(characters);
   }, [characters]);
 
-  const handleGender = person => {
-    switch (person) {
-      case 'male':
-        return 'Male';
-      case 'female':
-        return 'Female';
-      case 'none':
-      case 'n/a':
-        return 'Droid';
-      case 'hermaphrodite':
-        return 'Hermaphrodite';
-      default:
-        return person.gender;
+
+  const fetchCharacters = async () => {
+    for (let i = 1; i < 10; i++) {
+      let response = await Axios(`https://swapi.dev/api/people/?page=${i}`);
+      let cleanData = response.data.results.map(async character => {
+        return {
+          ...character,
+          height: setSpec(character.height, 'cm'),
+          mass: setSpec(character.mass, 'kg'),
+          birth_year: setSpec(character.birth_year),
+          gender: capitalize(character.gender),
+          homeworld: await handleEndpoints(character.homeworld),
+          species: setSpecies(await handleEndpoints(character.species)),
+        };
+      });
+
+      Promise.all(cleanData).then(result =>
+        setCharacters(characters => characters.concat(result))
+      );
     }
   };
 
+  const capitalize = (word) => {
+    if (word === 'none') return 'n/a'
+    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+  }
+
   const handleEndpoints = async props => {
     let result = await Axios.get(`${props}`);
-    return Promise.resolve(result.data.name);
+    return result.data.name;
   };
-  const handleSpecies = specie => {
-    switch (specie) {
-      case undefined:
-        return 'Human';
-      default:
-        return specie;
-    }
+
+  const setSpecies = specie => {
+    return specie ? specie : "Human";
   };
-  const handleHeight = height => {
-    switch (height) {
-      case 'unknown':
-        return 'No Record';
-      default:
-        return `${height}cm`;
-    }
-  };
-  const handleMass = mass => {
-    switch (mass) {
-      case 'unknown':
-        return 'No Record';
-      default:
-        return `${mass}kg`;
-    }
-  };
-  const handleBirthYear = year => {
-    switch (year) {
-      case 'unknown':
-        return 'No Record';
-      default:
-        return `${year}`;
-    }
-  };
+
+  const setSpec = (type, unit = '') => {
+    return type === 'unknown' ? 'No Record' : `${type}${unit}`;
+  }
+
 
   const columns = [
     { dataField: 'name', text: 'Name', sort: true },
